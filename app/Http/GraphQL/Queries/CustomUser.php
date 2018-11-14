@@ -2,11 +2,10 @@
 
 namespace App\Http\GraphQL\Queries;
 
-use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class LatestUser
+class CustomUser
 {
     /**
      * Return a value for the field.
@@ -20,6 +19,9 @@ class LatestUser
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        return User::orderBy('created_at', 'DESC')->first();
+        return [
+            'name'=> 'custom user',
+            'email'=> 'custom@example.com',
+        ];
     }
 }
