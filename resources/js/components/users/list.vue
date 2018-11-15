@@ -39,6 +39,7 @@
                             '/graphql', {
                                 query: '{ users { id name email} }'
                             });
+
                     this.users = res.data.data.users ;
 
                 } catch (e) {

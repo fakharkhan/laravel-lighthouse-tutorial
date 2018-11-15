@@ -2,10 +2,14 @@
 
 namespace App\Http\GraphQL\Queries;
 
+use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CustomUsers
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+
+class Users
 {
     /**
      * Return a value for the field.
@@ -19,15 +23,29 @@ class CustomUsers
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        return [
-            [
-                'name'=> 'custom user',
-                'email'=> 'custom@example.com',
-            ],
-            [
-                'name'=> 'custom user 2',
-                'email'=> 'custom2@example.com'
-            ]
+
+        $client = new Client(); //GuzzleHttp\Client
+
+        $headers = [
+            'Accept'        => 'application/json',
+            'Content-Type'  => 'application/json',
+            'Origin'        => 'http://graph-ql-demo.softpyramid.com'
         ];
+
+        $query = ['query' => '{ users { id name email} }'];
+
+        $res = $client->post('http://graph-ql-demo.softpyramid.com/graphql', [
+            'query'     =>  $query,
+            'headers'   =>  $headers
+        ]);
+
+        $response = $res->getBody()->getContents();
+        $response = json_decode($response);
+
+        return $response->data->users ;
+
+
     }
+
+
 }

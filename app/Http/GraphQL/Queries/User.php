@@ -5,7 +5,7 @@ namespace App\Http\GraphQL\Queries;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CustomUser
+class User
 {
     /**
      * Return a value for the field.
@@ -19,9 +19,7 @@ class CustomUser
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        return [
-            'name'=> 'custom user',
-            'email'=> 'custom@example.com',
-        ];
+
+        return \App\User::find($args['id']);
     }
 }
